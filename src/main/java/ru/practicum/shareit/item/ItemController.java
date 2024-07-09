@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.model.Item;
 
 import java.util.List;
 
@@ -17,41 +16,42 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping
-    public Item create(@Valid @RequestBody ItemDto itemDto,
-                       @RequestHeader("X-Sharer-User-Id") Integer id) {
-        Item tempItem = itemService.createItem(itemDto, id);
+    public ItemDto create(@Valid @RequestBody ItemDto itemDto,
+                          @RequestHeader("X-Sharer-User-Id") Long id) {
+        ItemDto tempItem = itemService.createItem(itemDto, id);
         log.info("Item created: " + tempItem);
         return tempItem;
     }
 
     @PatchMapping("{id}")
-    public Item update(@RequestBody ItemDto itemDto,
-                       @RequestHeader("X-Sharer-User-Id") Integer userId,
-                       @PathVariable Integer id) {
-        Item tempItem = itemService.updateItem(itemDto, userId, id);
+    public ItemDto update(@RequestBody ItemDto itemDto,
+                          @RequestHeader("X-Sharer-User-Id") Long userId,
+                          @PathVariable Long id) {
+        itemDto.setId(id);
+        ItemDto tempItem = itemService.updateItem(itemDto, userId);
         log.info("Item updated: " + tempItem);
         return tempItem;
     }
 
     @GetMapping("{id}")
-    public Item getForId(@PathVariable Integer id) {
-        Item item = itemService.getItem(id);
+    public ItemDto getForId(@PathVariable Long id) {
+        ItemDto item = itemService.getItem(id);
         log.info("Get item: ", item);
         return item;
     }
 
     @GetMapping
-    public List<Item> getAllItems(@RequestHeader("X-Sharer-User-Id") Integer id) {
-        List<Item> itemsList = itemService.getAllItems(id);
+    public List<ItemDto> getAllItems(@RequestHeader("X-Sharer-User-Id") Long id) {
+        List<ItemDto> itemsList = itemService.getAllItems(id);
         log.info("Get all items: " + itemsList);
         return itemsList;
     }
 
     @GetMapping("/search")
-    public List<Item> searchItems(
+    public List<ItemDto> searchItems(
             @RequestParam String text) {
-        List<Item> itemsList = itemService.searchItem(text);
-        log.info("Get all items: " + itemsList);
+        List<ItemDto> itemsList = itemService.searchItem(text);
+        log.info("Search all items: " + itemsList);
         return itemsList;
     }
 }

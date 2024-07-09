@@ -8,11 +8,11 @@ import java.util.List;
 public interface UserRepository {
     User createUser(UserDto user);
 
-    User getUser(int id);
+    User getUser(Long id);
 
     User updateUser(User user);
 
-    void deleteUser(int id);
+    void deleteUser(Long id);
 
     List<User> getAllUsers();
 }

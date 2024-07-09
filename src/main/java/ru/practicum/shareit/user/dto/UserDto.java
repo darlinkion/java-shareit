@@ -13,6 +13,7 @@ import lombok.ToString;
 @Setter
 @Builder
 public class UserDto {
+    Long id;
     @NotBlank
     private String name;
     @Email

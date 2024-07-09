@@ -14,22 +14,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserRepositoryInMemory implements UserRepository {
 
-    private final HashMap<Integer, User> users = new HashMap<>();
-    private int index = 0;
+    private final HashMap<Long, User> users = new HashMap<>();
+    private Long index = 0L;
 
     @Override
     public User updateUser(User user) {
-        int id = user.getId();
+        Long id = user.getId();
         checkUserEmailForUpdate(user.getEmail(), id);
-        User updatedUser = users.get(id);
-        if (user.getName() != null) {
-            updatedUser.setName(user.getName());
-        }
-        if (user.getEmail() != null) {
-            updatedUser.setEmail(user.getEmail());
-        }
-        users.put(id, updatedUser);
-        return updatedUser;
+        users.put(id, user);
+        return user;
     }
 
     @Override
@@ -42,12 +35,20 @@ public class UserRepositoryInMemory implements UserRepository {
     }
 
     @Override
-    public User getUser(int id) {
-        return users.get(id);
+    public User getUser(Long id) {
+        User user = users.get(id);
+        if (user == null) {
+            return null;
+        }
+        return User.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .build();
     }
 
     @Override
-    public void deleteUser(int id) {
+    public void deleteUser(Long id) {
         users.remove(id);
     }
 
@@ -64,16 +65,16 @@ public class UserRepositoryInMemory implements UserRepository {
         }
     }
 
-    private void checkUserEmailForUpdate(String email, int id) {
+    private void checkUserEmailForUpdate(String email, Long id) {
         for (User u : users.values()) {
-            if (u.getEmail().equals(email) && u.getId() != id) {
+            if (u.getEmail().equals(email) && !u.getId().equals(id)) {
                 throw new EmailValidationException("Нельзя обновить email, пользователь" +
                         " с таким email уже есть");
             }
         }
     }
 
-    private int setIdForUser() {
+    private Long setIdForUser() {
         return ++index;
     }
 }

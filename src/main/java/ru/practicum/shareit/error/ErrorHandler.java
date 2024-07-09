@@ -16,7 +16,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse validationExceptionInController(final NotFoundException e) {
         log.error("Validation {}", e);
-        return new ErrorResponse("error");
+        return new ErrorResponse(e.getMessage());
     }
 
     @ExceptionHandler(value = EmailValidationException.class)

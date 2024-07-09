@@ -12,10 +12,10 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 public class Booking {
-    private Integer id;
+    private Long id;
     private LocalDateTime start;
     private LocalDateTime end;
-    private Integer itemId;
-    private Integer bookerId;
+    private Long itemId;
+    private Long bookerId;
     private Status status;
 }

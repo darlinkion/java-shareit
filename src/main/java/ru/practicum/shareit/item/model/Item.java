@@ -1,6 +1,5 @@
 package ru.practicum.shareit.item.model;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,12 +11,10 @@ import ru.practicum.shareit.request.ItemRequest;
 @Setter
 @Builder
 public class Item {
-    private Integer id;
-    @NotBlank
+    private Long id;
     private String name;
-    @NotBlank
     private String description;
     private Boolean available;
-    private Integer ownerId;
+    private Long ownerId;
     private ItemRequest request;
 }
