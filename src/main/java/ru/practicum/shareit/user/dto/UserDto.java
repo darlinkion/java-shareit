@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import ru.practicum.shareit.marker.Marker;
 
 @ToString
 @Getter
@@ -14,9 +15,9 @@ import lombok.ToString;
 @Builder
 public class UserDto {
     Long id;
-    @NotBlank
+    @NotBlank(groups=Marker.Create.class)
     private String name;
     @Email
-    @NotNull
+    @NotBlank(groups = Marker.Create.class)
     private String email;
 }

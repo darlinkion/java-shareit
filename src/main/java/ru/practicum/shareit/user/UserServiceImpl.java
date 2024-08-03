@@ -17,13 +17,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto createUser(UserDto user) {
-        User tempUser = userRepository.createUser(user);
+        User tempUser = userRepository.create(user);
         return UserMapper.toUserDto(tempUser);
     }
 
     @Override
     public UserDto getUser(Long id) {
-        Optional<User> user = Optional.ofNullable(userRepository.getUser(id));
+        Optional<User> user = userRepository.getUser(id);
         if (user.isEmpty()) {
             throw new NotFoundException("Нет такого пользователя по id:" + id);
         }

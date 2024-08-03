@@ -12,12 +12,12 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class UserRepositoryInMemory implements UserRepository {
+public class UserRepositoryInMemory  {
 
     private final HashMap<Long, User> users = new HashMap<>();
     private Long index = 0L;
 
-    @Override
+
     public User updateUser(User user) {
         Long id = user.getId();
         checkUserEmailForUpdate(user.getEmail(), id);
@@ -25,7 +25,7 @@ public class UserRepositoryInMemory implements UserRepository {
         return user;
     }
 
-    @Override
+
     public User createUser(UserDto user) {
         checkUserEmail(user.getEmail());
         User newUser = UserMapper.toUserFromDto(user);
@@ -34,7 +34,7 @@ public class UserRepositoryInMemory implements UserRepository {
         return newUser;
     }
 
-    @Override
+
     public User getUser(Long id) {
         User user = users.get(id);
         if (user == null) {
@@ -47,12 +47,12 @@ public class UserRepositoryInMemory implements UserRepository {
                 .build();
     }
 
-    @Override
+
     public void deleteUser(Long id) {
         users.remove(id);
     }
 
-    @Override
+
     public List<User> getAllUsers() {
         return List.copyOf(users.values());
     }
