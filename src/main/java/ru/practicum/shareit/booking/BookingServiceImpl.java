@@ -73,7 +73,7 @@ public class BookingServiceImpl implements BookingService {
             throw new BookingException("Статус бронирования уже изменен");
         }
 
-        if ((item.getOwner().getId())!= userId) {
+        if ((item.getOwner().getId()) != userId) {
             throw new NotFoundException("Только владелиц вещи может изменить статус");
         }
 
@@ -87,7 +87,7 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = bookingRepository.findById(bookingId).orElseThrow(
                 () -> new NotFoundException("Нет такого бранирования"));
         Item item = booking.getItem();
-        if ((!userId.equals(booking.getBooker().getId())) && (!userId.equals(item.getOwner().getId()))){
+        if ((!userId.equals(booking.getBooker().getId())) && (!userId.equals(item.getOwner().getId()))) {
             throw new BookingException("Бронирование может получит только пользователь создавший его");
         }
         return BookingMapper.toBookingResponseDto(booking);
