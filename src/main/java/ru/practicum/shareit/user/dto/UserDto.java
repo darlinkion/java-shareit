@@ -2,12 +2,12 @@ package ru.practicum.shareit.user.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import ru.practicum.shareit.marker.Marker;
+import ru.practicum.shareit.marker.Create;
+import ru.practicum.shareit.marker.Update;
 
 @ToString
 @Getter
@@ -15,9 +15,9 @@ import ru.practicum.shareit.marker.Marker;
 @Builder
 public class UserDto {
     Long id;
-    @NotBlank(groups=Marker.Create.class)
+    @NotBlank(groups = Create.class)
     private String name;
-    @Email
-    @NotBlank(groups = Marker.Create.class)
+    @Email(groups = {Create.class, Update.class})
+    @NotBlank(groups = Create.class)
     private String email;
 }

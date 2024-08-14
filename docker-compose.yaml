@@ -8,15 +8,15 @@ services:
     container_name: java-shereit
     # публикуемые порты
     ports:
-      - "5432:6432"
+      - "5434:6432"
     # настройки монтирования volume
     volumes:
       - ./volumes/postgres:/var/lib/postgresql/data/
     # переменные окружения
     environment:
-      - POSTGRES_DB=java-shereitdb
-      - POSTGRES_USER=dbuser
-      - POSTGRES_PASSWORD=12345
+      - POSTGRES_DB=shareit
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=1
     # описание способа проверки, что контейнер в рабочем состоянии
     healthcheck:
       # указываем, какую команду выполнить внутри контейнера для проверки его статуса
