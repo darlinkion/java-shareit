@@ -33,7 +33,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleException(final Exception e) {
         log.error("Error\n", e);
-        return new ErrorResponse("Необработанная ошибка, ");
+        return new ErrorResponse("Необработанная ошибка", e.getMessage());
     }
 
     @ExceptionHandler(value = BookingException.class)
@@ -45,7 +45,7 @@ public class ErrorHandler {
 
     @ExceptionHandler(value = ItemOwnerException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse ItemOwnerExceptionInService(final ItemOwnerException e) {
+    public ErrorResponse itemOwnerExceptionInService(final ItemOwnerException e) {
         log.error("ItemOwner {}", e);
         return new ErrorResponse(e.getMessage());
     }
