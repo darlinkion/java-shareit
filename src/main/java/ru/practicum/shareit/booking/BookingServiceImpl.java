@@ -122,8 +122,8 @@ public class BookingServiceImpl implements BookingService {
             default:
                 throw new IllegalStateException("Unexpected value: " + newState);
         }
-        return bookings.stream().
-                map(BookingMapper::toBookingResponseDto)
+        return bookings.stream()
+                .map(BookingMapper::toBookingResponseDto)
                 .toList();
     }
 
