@@ -2,6 +2,7 @@ package ru.practicum.shareit.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
@@ -15,47 +16,49 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
+    @Transactional
     @Override
     public UserDto createUser(UserDto user) {
-        User tempUser = userRepository.createUser(user);
-        return UserMapper.toUserDto(tempUser);
+        User newUser = UserMapper.toUserFromDto(user);
+        return UserMapper.toUserDto(userRepository.save(newUser));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserDto getUser(Long id) {
-        Optional<User> user = Optional.ofNullable(userRepository.getUser(id));
+        Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
             throw new NotFoundException("Нет такого пользователя по id:" + id);
         }
         return UserMapper.toUserDto(user.get());
     }
 
+    @Transactional
     @Override
     public UserDto updateUser(UserDto user, Long id) {
-        User oldUser = userRepository.getUser(id);
-        if (oldUser == null) {
+        Optional<User> oldUser = userRepository.findById(id);
+        if (oldUser.isEmpty()) {
             throw new NotFoundException("Нет такого пользователя id:" + id
                     + " невозможно сделать обновление");
         }
         if (user.getName() != null) {
-            oldUser.setName(user.getName());
+            oldUser.get().setName(user.getName());
         }
         if (user.getEmail() != null) {
-            oldUser.setEmail(user.getEmail());
+            oldUser.get().setEmail(user.getEmail());
         }
-        User newUser = userRepository.updateUser(oldUser);
+        User newUser = userRepository.save(oldUser.get());
         return UserMapper.toUserDto(newUser);
     }
 
     @Override
     public void deleteUser(Long id) {
-        getUser(id);
-        userRepository.deleteUser(id);
+        userRepository.deleteById(id);
     }
 
     @Override
     public List<UserDto> getAllUsers() {
-        return userRepository.getAllUsers()
+        return userRepository.findAll()
                 .stream()
                 .map(UserMapper::toUserDto)
                 .toList();

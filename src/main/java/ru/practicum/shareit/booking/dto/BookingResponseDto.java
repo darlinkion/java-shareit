@@ -1,13 +1,13 @@
 package ru.practicum.shareit.booking.dto;
 
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import ru.practicum.shareit.booking.Status;
-import ru.practicum.shareit.marker.Create;
+import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.user.dto.UserDto;
 
 import java.time.LocalDateTime;
 
@@ -15,16 +15,17 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-public class BookingDto {
+public class BookingResponseDto {
+    @NotNull
     private Long id;
-    @NotNull(groups = Create.class)
-    @Future(groups = Create.class)
+    @NotNull
     private LocalDateTime start;
-    @NotNull(groups = Create.class)
-    @Future(groups = Create.class)
+    @NotNull
     private LocalDateTime end;
-    @NotNull(groups = Create.class)
-    private Long itemId;
-    private Long bookerId;
+    @NotNull
+    private ItemDto item;
+    @NotNull
+    private UserDto booker;
+    @NotNull
     private Status status;
 }

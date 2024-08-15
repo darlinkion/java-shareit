@@ -4,7 +4,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.item.dto.CommentDto;
+import ru.practicum.shareit.item.dto.CommentResponseDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.ItemResponseDto;
 
 import java.util.List;
 
@@ -33,9 +36,9 @@ public class ItemController {
         return tempItem;
     }
 
-    @GetMapping("{id}")
-    public ItemDto getForId(@PathVariable Long id) {
-        ItemDto item = itemService.getItem(id);
+    @GetMapping("{itemId}")
+    public ItemResponseDto getForId(@RequestHeader("X-Sharer-User-Id") Long userId, @PathVariable Long itemId) {
+        ItemResponseDto item = itemService.getItem(itemId, userId);
         log.info("Get item: ", item);
         return item;
     }
@@ -53,5 +56,14 @@ public class ItemController {
         List<ItemDto> itemsList = itemService.searchItem(text);
         log.info("Search all items: " + itemsList);
         return itemsList;
+    }
+
+    @PostMapping("{itemId}/comment")
+    public CommentResponseDto addComment(@RequestBody @Valid CommentDto commentDto, @PathVariable Long itemId, @RequestHeader("X-Sharer-User-Id") Long userId) {
+        commentDto.setItemId(itemId);
+        commentDto.setAuthorId(userId);
+        CommentResponseDto commentResponseDto = itemService.createComment(commentDto);
+        log.info("Comment added: " + commentResponseDto);
+        return commentResponseDto;
     }
 }
